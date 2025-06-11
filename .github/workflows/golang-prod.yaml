@@ -65,10 +65,6 @@ jobs:
       #     export GITHUB_REF_NAME=$(git describe --tags --abbrev=0 --always)
 
       - name: Push Docker images
-        with:
-          aws-access-key-id: ${{ secrets.TF_VAR_aws_access_key }}
-          aws-secret-access-key: ${{ secrets.TF_VAR_aws_secret_key }}
-          aws-region: ${{ env.AWS_REGION }}
         run: |
           # git clone https://atitX:${GITHUB_TOKEN}@github.com/TempMee/${REPO}.git ${REPO}
           # cd ${REPO}
@@ -80,3 +76,7 @@ jobs:
           docker push $REPOSITORY_URI:$GITHUB_REF_NAME
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $PROD_REPOSITORY_URI
           docker push $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
+        with:
+          aws-access-key-id: ${{ secrets.TF_VAR_aws_access_key }}
+          aws-secret-access-key: ${{ secrets.TF_VAR_aws_secret_key }}
+          aws-region: ${{ env.AWS_REGION }}
