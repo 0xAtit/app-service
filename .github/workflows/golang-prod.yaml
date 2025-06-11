@@ -57,9 +57,6 @@ jobs:
 
       - name: Extract tag
         run: |
-      #     git clone https://bludot:${GITHUB_TOKEN}@github.com/TempMee/${REPO}.git ${REPO}
-      #     cd ${REPO}
-      #     git checkout ${MAIN_BRANCH}
           git fetch --tags
           export GITHUB_REF_NAME=$(git describe --tags --abbrev=0 --always)
 
