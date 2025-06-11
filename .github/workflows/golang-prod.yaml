@@ -48,7 +48,7 @@ jobs:
       - name: Pull cache image
         run: docker pull $REPOSITORY_URI:latest || true
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag
         run: |
           IMAGE_TAG=build-${{ github.run_id }}
           docker build --cache-from $REPOSITORY_URI:latest -t $REPOSITORY_URI:latest . --build-arg GITHUB_TOKEN=$GITHUB_TOKEN
