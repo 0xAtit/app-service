@@ -12,24 +12,32 @@ on:
       cloudfront_distribution_id:
         required: false
         type: string
+      main_branch:
+        required: false
+        type: string
+      PROD_REPOSITORY_URI:
+        required: true
+        type: string
+      REPOSITORY_URI:
+        required: true
+        type: string
 
 env:
   AWS_REGION: us-east-1
-  REPOSITORY_URI: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang
-  PROD_REPOSITORY_URI: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang-prod
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # PROD_AWS_ID: ${{ secrets.PROD_AWS_ID }}
   REPO: your-repo-name
-  MAIN_BRANCH: main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: write
-    #   packages: write
-
+    permissions:
+      contents: read
+      # packages: write
+      id-token: write
     steps:
+      - name: Get called workflow reference
+        run: |
+          ls -lah .
       - name: Checkout source
         uses: actions/checkout@v4
         # run: echo "GITHUB_REF_NAME=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
@@ -67,14 +75,6 @@ jobs:
 
       - name: Push Docker images to ECR2
         run: |
-          # git clone https://atitX:${GITHUB_TOKEN}@github.com/TempMee/${REPO}.git ${REPO}
-          # cd ${REPO}
-          # git checkout ${MAIN_BRANCH}
-          # git fetch --tags
-          # export GITHUB_REF_NAME=$(git describe --tags --abbrev=0 --always)
-          # docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$GITHUB_REF_NAME
-          # docker tag $REPOSITORY_URI:latest $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
-          # docker push $REPOSITORY_URI:$GITHUB_REF_NAME
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $PROD_REPOSITORY_URI
           docker tag $REPOSITORY_URI:latest $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
           docker push $PROD_REPOSITORY_URI:$GITHUB_REF_NAME

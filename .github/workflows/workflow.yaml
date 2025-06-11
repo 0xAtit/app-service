@@ -2,14 +2,21 @@ name: Trigger Reusable Workflow
 
 on:
   push:
-    branches: [main]
+    branches: [${main_branch}]
 
 jobs:
   call-reusable:
+    permissions:
+      contents: read
+      id-token: write
     uses: atitMula/docker-gs-ping/.github/workflows/golang-prod.yaml@main
 
     with:
       ecr_repo: "golang"
-      s3_bucket_name:
-      cloudfront_distribution_id:
+      s3_bucket_name: ${s3_bucket_name}
+      cloudfront_distribution_id: ${cloudfront_distribution_id}
+      main_branch: ${main_branch}
+      PROD_REPOSITORY_URI: ${aws_ecr_repository.prod.repository_url}
+      REPOSITORY_URI: ${aws_ecr_repository.nonprod.repository_url}
+
     secrets: inherit
