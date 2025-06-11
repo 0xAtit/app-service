@@ -19,37 +19,50 @@ inputs:
   repository_uri:
     required: true
     type: string
-env:
-  AWS_REGION: us-east-1
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  REPO: your-repo-name
-  PROD_REPOSITORY_URI: ${{ inputs.prod_repository_uri }}
-  REPOSITORY_URI: ${{ inputs.repository_uri }}
+# env:
+#   AWS_REGION: us-east-1
+#   GITHUB_TOKEN: ${{ input.GITHUB_TOKEN }}
+#   REPO: your-repo-name
+#   PROD_REPOSITORY_URI: ${{ inputs.prod_repository_uri }}
+#   REPOSITORY_URI: ${{ inputs.repository_uri }}
 
 runs:
   using: "composite"
   steps:
+
+    - name: Set globals
+      shell: bash
+      id: globals
+      shell: bash
+      run: |
+        echo "PROD_REPOSITORY_URI=${{ inputs.prod_repository_uri }}" >> "${GITHUB_OUTPUT}"
+        echo "REPOSITORY_URI=${{ inputs.repository_uri }}" >> "${GITHUB_OUTPUT}"
+        echo "GITHUB_TOKEN=${{ input.GITHUB_TOKEN }}" >> "${GITHUB_OUTPUT}"
 
     - name: Checkout source
       uses: actions/checkout@v2
       # run: echo "GITHUB_REF_NAME=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
 
     - name: Configure AWS credentials
+      shell: bash
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: us-east-1
 
     - name: Log in to Amazon ECR
+      shell: bash
       run: |
         ls -lah .
-        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ steps.globals.outputs.REPOSITORY_URI }}
 
     - name: Pull cache image
+      shell: bash
       run: docker pull $REPOSITORY_URI:latest || true
 
     - name: Build, tag
+      shell: bash
       run: |
         IMAGE_TAG=build-${{ github.run_id }}
         docker build --cache-from $REPOSITORY_URI:latest -t $REPOSITORY_URI:latest . --build-arg GITHUB_TOKEN=$GITHUB_TOKEN
@@ -57,16 +70,19 @@ runs:
         docker push $REPOSITORY_URI:latest
 
     - name: Extract tag
+      shell: bash
       run: |
         git fetch --tags
         export GITHUB_REF_NAME=$(git describe --tags --abbrev=0 --always)
 
     - name: Push Docker images to ECR1
+      shell: bash
       run: |
         docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$GITHUB_REF_NAME
         docker push $REPOSITORY_URI:$GITHUB_REF_NAME
 
     - name: Push Docker images to ECR2
+      shell: bash
       run: |
         aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $PROD_REPOSITORY_URI
         docker tag $REPOSITORY_URI:latest $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
