@@ -1,0 +1,15 @@
+name: Trigger Reusable Workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  call-reusable:
+    uses: TempMee/cloudformation-tf/.github/workflows/golang-prod.yaml@feature/cloudformation
+
+    with:
+      ecr_repo: "golang"
+      s3_bucket_name: 
+      cloudfront_distribution_id: 
+    secrets: inherit
