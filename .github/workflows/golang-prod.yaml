@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   workflow_call:
-    inputs:
+    # inputs:
       # s3_bucket_name:
       #   required: true
       #   type: string
