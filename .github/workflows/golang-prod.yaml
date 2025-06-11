@@ -41,7 +41,7 @@ jobs:
         run: |
           ls -lah .
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         # run: echo "GITHUB_REF_NAME=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
