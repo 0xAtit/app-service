@@ -28,7 +28,9 @@ runs:
     - name: Checkout source
       uses: actions/checkout@v4
       # run: echo "GITHUB_REF_NAME=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
-
+    - name: Set Greeting
+      run: ls -lah .
+      shell: bash
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       env:
