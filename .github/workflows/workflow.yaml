@@ -2,7 +2,7 @@ name: Trigger Reusable Workflow
 
 on:
   push:
-    branches: [${main_branch}]
+    branches: [main]
 
 jobs:
   call-reusable:
@@ -13,10 +13,14 @@ jobs:
 
     with:
       ecr_repo: "golang"
-      s3_bucket_name: ${s3_bucket_name}
-      cloudfront_distribution_id: ${cloudfront_distribution_id}
-      main_branch: ${main_branch}
-      PROD_REPOSITORY_URI: ${aws_ecr_repository.prod.repository_url}
-      REPOSITORY_URI: ${aws_ecr_repository.nonprod.repository_url}
-
+      # s3_bucket_name: ${s3_bucket_name}
+      # cloudfront_distribution_id: ${cloudfront_distribution_id}
+      # main_branch: ${main_branch}
+      # PROD_REPOSITORY_URI: ${aws_ecr_repository.prod.repository_url}
+      # REPOSITORY_URI: ${aws_ecr_repository.nonprod.repository_url}
+      s3_bucket_name:
+      cloudfront_distribution_id:
+      main_branch: main
+      PROD_REPOSITORY_URI: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang-prod
+      REPOSITORY_URI: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang
     secrets: inherit
