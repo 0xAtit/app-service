@@ -15,8 +15,8 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  REPOSITORY_URI: ${{ secrets.REPOSITORY_URI }}
-  PROD_REPOSITORY_URI: ${{ secrets.PROD_REPOSITORY_URI }}
+  REPOSITORY_URI: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang
+  PROD_REPOSITORY_URI: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang-prod
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # PROD_AWS_ID: ${{ secrets.PROD_AWS_ID }}
   REPO: your-repo-name
