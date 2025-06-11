@@ -10,6 +10,6 @@ jobs:
 
     with:
       ecr_repo: "golang"
-      s3_bucket_name: 
-      cloudfront_distribution_id: 
+      s3_bucket_name: "test"
+      cloudfront_distribution_id: "test"
     secrets: inherit
