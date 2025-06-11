@@ -15,10 +15,10 @@ on:
       main_branch:
         required: false
         type: string
-      PROD_REPOSITORY_URI:
+      prod_repository_uri:
         required: true
         type: string
-      REPOSITORY_URI:
+      repository_uri:
         required: true
         type: string
 
@@ -26,6 +26,8 @@ env:
   AWS_REGION: us-east-1
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO: your-repo-name
+  PROD_REPOSITORY_URI: ${{ inputs.prod_repository_uri }}
+  REPOSITORY_URI: ${{ inputs.repository_uri }}
 
 jobs:
   build:
