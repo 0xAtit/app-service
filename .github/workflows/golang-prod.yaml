@@ -63,20 +63,25 @@ jobs:
       #     git checkout ${MAIN_BRANCH}
       #     git fetch --tags
       #     export GITHUB_REF_NAME=$(git describe --tags --abbrev=0 --always)
+      - name: Push Docker images to ECR1
+        run: |
+          docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$GITHUB_REF_NAME
+          docker tag $REPOSITORY_URI:latest $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
+          docker push $REPOSITORY_URI:$GITHUB_REF_NAME
 
-      - name: Push Docker images
+      - name: Push Docker images to ECR2
         run: |
           # git clone https://atitX:${GITHUB_TOKEN}@github.com/TempMee/${REPO}.git ${REPO}
           # cd ${REPO}
           # git checkout ${MAIN_BRANCH}
           # git fetch --tags
           # export GITHUB_REF_NAME=$(git describe --tags --abbrev=0 --always)
-          docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$GITHUB_REF_NAME
-          docker tag $REPOSITORY_URI:latest $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
-          docker push $REPOSITORY_URI:$GITHUB_REF_NAME
+          # docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$GITHUB_REF_NAME
+          # docker tag $REPOSITORY_URI:latest $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
+          # docker push $REPOSITORY_URI:$GITHUB_REF_NAME
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $PROD_REPOSITORY_URI
           docker push $PROD_REPOSITORY_URI:$GITHUB_REF_NAME
-        with:
+        env:
           aws-access-key-id: ${{ secrets.TF_VAR_aws_access_key }}
           aws-secret-access-key: ${{ secrets.TF_VAR_aws_secret_key }}
           aws-region: ${{ env.AWS_REGION }}
