@@ -30,9 +30,8 @@ runs:
       # run: echo "GITHUB_REF_NAME=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
 
     - name: Configure AWS credentials
-      shell: bash
       uses: aws-actions/configure-aws-credentials@v2
-      with:
+      env:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
