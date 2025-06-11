@@ -30,17 +30,16 @@ runs:
   using: "composite"
   steps:
 
-    - name: Set globals
-      shell: bash
-      id: globals
-      shell: bash
-      run: |
-        echo "PROD_REPOSITORY_URI=${{ inputs.prod_repository_uri }}" >> "${GITHUB_OUTPUT}"
-        echo "REPOSITORY_URI=${{ inputs.repository_uri }}" >> "${GITHUB_OUTPUT}"
-        echo "GITHUB_TOKEN=${{ input.GITHUB_TOKEN }}" >> "${GITHUB_OUTPUT}"
+    # - name: Set globals
+    #   shell: bash
+    #   id: globals
+    #   run: |
+    #     echo "PROD_REPOSITORY_URI=${{ inputs.prod_repository_uri }}" >> "${GITHUB_OUTPUT}"
+    #     echo "REPOSITORY_URI=${{ inputs.repository_uri }}" >> "${GITHUB_OUTPUT}"
+    #     echo "GITHUB_TOKEN=${{ input.GITHUB_TOKEN }}" >> "${GITHUB_OUTPUT}"
 
     - name: Checkout source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       # run: echo "GITHUB_REF_NAME=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
 
     - name: Configure AWS credentials
