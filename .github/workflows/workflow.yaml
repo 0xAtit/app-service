@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-reusable:
-    uses: TempMee/cloudformation-tf/.github/workflows/golang-prod.yaml@main
+    uses: atitMula/docker-gs-ping/.github/workflows/golang-prod.yaml@main
 
     with:
       ecr_repo: "golang"
