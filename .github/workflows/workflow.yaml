@@ -9,7 +9,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: atitMula/docker-gs-ping/.github/workflows/golang-prod.yaml@main
+    uses: atitMula/reusable/.github/workflows/golang-prod.yaml@main
 
     with:
       ecr_repo: "golang"
