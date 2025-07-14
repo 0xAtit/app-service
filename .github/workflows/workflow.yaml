@@ -1,13 +1,13 @@
 name: Trigger Reusable Workflow
 
-# on:
-#   push:
-#     branches: [main]
-
 on:
   push:
-    tags:        
-      - '**'
+    branches: [main]
+
+# on:
+#   push:
+#     tags:        
+#       - '**'
       # - 'v*.*.*'
 jobs:
   call-reusable:
