@@ -1,9 +1,14 @@
 name: Trigger Reusable Workflow
 
+# on:
+#   push:
+#     branches: [main]
+
 on:
   push:
-    branches: [main]
-
+    tags:        
+      - '**'
+      # - 'v*.*.*'
 jobs:
   call-reusable:
     permissions:
@@ -12,15 +17,16 @@ jobs:
     uses: atitMula/reusable/.github/workflows/golang-prod.yaml@main
 
     with:
-      ecr_repo: "golang"
+      ecr_repo: ${{github.repository}}
       # s3_bucket_name: ${s3_bucket_name}
       # cloudfront_distribution_id: ${cloudfront_distribution_id}
       # main_branch: ${main_branch}
       # PROD_REPOSITORY_URI: ${aws_ecr_repository.prod.repository_url}
       # REPOSITORY_URI: ${aws_ecr_repository.nonprod.repository_url}
-      s3_bucket_name:
-      cloudfront_distribution_id:
+      # github_repo: ${github_repo}
+      # s3_bucket_name:
+      # cloudfront_distribution_id:
       main_branch: main
-      prod_repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang-prod
-      repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/golang
+      prod_repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/${{github.repository}}
+      repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/${{github.repository}}
     secrets: inherit
