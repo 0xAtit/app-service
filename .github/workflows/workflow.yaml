@@ -17,7 +17,7 @@ jobs:
     uses: 0xAtit/reusable/.github/workflows/golang-prod.yaml@main
 
     with:
-      ecr_repo: ${{ github.event.repository.name }}
+      # ecr_repo: ${{ github.event.repository.name }}
       # s3_bucket_name: ${s3_bucket_name}
       # cloudfront_distribution_id: ${cloudfront_distribution_id}
       # main_branch: ${main_branch}
