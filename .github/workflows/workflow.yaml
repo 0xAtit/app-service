@@ -17,7 +17,7 @@ jobs:
     uses: 0xAtit/reusable/.github/workflows/golang-prod.yaml@main
 
     with:
-      ecr_repo: ${{github.repository}}
+      ecr_repo: ${{ github.event.repository.name }}
       # s3_bucket_name: ${s3_bucket_name}
       # cloudfront_distribution_id: ${cloudfront_distribution_id}
       # main_branch: ${main_branch}
@@ -27,6 +27,6 @@ jobs:
       # s3_bucket_name:
       # cloudfront_distribution_id:
       main_branch: main
-      prod_repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/${{github.repository}}
-      repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/${{github.repository}}
+      prod_repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.repository.name }}
+      repository_uri: 966085404185.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.repository.name }}
     secrets: inherit
